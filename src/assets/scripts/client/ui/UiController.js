@@ -78,6 +78,15 @@ class UiController {
          */
         this.$airportGuideDialog = null;
         
+        
+        /**
+         * Element of the airport search bar
+         *
+         * @for UiController
+         * @property $airportSearch
+         * @type {Jquery|Element}
+         * @default null
+         */
         this.$airportSearch = null;
 
         /**
@@ -671,7 +680,15 @@ class UiController {
         this.$switchAirport.addClass(SELECTORS.CLASSNAMES.ACTIVE);
     }
 
+
+    /**
+     * @for UiController
+     * @method onInitiateAirportSearch
+     */
+     
     onInitiateAirportSearch() {
+        EventTracker.recordEvent(TRACKABLE_EVENT.AIRPORTS, 'airport-search', 'start');
+        
         const value = this.$airportDialog.find(SELECTORS.DOM_SELECTORS.AIRPORT_SEARCH).val().toLowerCase();
         
         $('.dialog-body li').filter(
