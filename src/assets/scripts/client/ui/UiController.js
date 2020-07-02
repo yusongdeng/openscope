@@ -685,7 +685,6 @@ class UiController {
      * @for UiController
      * @method onInitiateAirportSearch
      */
-
     onInitiateAirportSearch() {
         EventTracker.recordEvent(TRACKABLE_EVENT.AIRPORTS, 'airport-search', 'start');
 
