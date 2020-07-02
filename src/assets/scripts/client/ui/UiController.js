@@ -77,6 +77,8 @@ class UiController {
          * @default null
          */
         this.$airportGuideDialog = null;
+        
+        this.$airportSearch = null;
 
         /**
          * Element of the airport guide dialog
@@ -298,6 +300,7 @@ class UiController {
         this.$airportDialog = this.$element.find(SELECTORS.DOM_SELECTORS.AIRPORT_SWITCH);
         this.$airportDialogBody = this.$airportDialog.find(SELECTORS.DOM_SELECTORS.DIALOG_BODY);
         this.$airportGuideDialog = this.$element.find(SELECTORS.DOM_SELECTORS.AIRPORT_GUIDE_CONTAINER);
+        this.$airportSearch = this.$element.find(SELECTORS.DOM_SELECTORS.AIRPORT_SEARCH);
         this.$changelogDialog = this.$element.find(SELECTORS.DOM_SELECTORS.CHANGELOG_CONTAINER);
         this.$tutorialDialog = this.$element.find(SELECTORS.DOM_SELECTORS.TUTORIAL);
         this.$fastForwards = this.$element.find(SELECTORS.DOM_SELECTORS.FAST_FORWARDS);
@@ -342,6 +345,7 @@ class UiController {
      */
     enable() {
         // TODO: move these to properly bound handler methods
+        this.$airportSearch.on('keyup', (event) => this.onInitiateAirportSearch(event));
         this.$fastForwards.on('click', (event) => GameController.game_timewarp_toggle(event));
         this.$githubLinkElement.on('click', (event) => this.onClickGithubLink(event));
         this.$pausedImg.on('click', (event) => GameController.game_unpause(event));
@@ -408,6 +412,7 @@ class UiController {
         this.$airportDialog = null;
         this.$airportDialogBody = null;
         this.$airportGuideDialog = null;
+        this.$airportSearch = null;
         this.$changelogDialog = null;
         this.$tutorialDialog = null;
         this.$fastForwards = null;
@@ -650,15 +655,6 @@ class UiController {
      */
 
     _onClickOpenAirportDialog() {
-        $('.search').on('keyup', function() {
-            const value = $(this).val().toLowerCase();
-            $('.dialog-body li').filter(
-                function() {
-                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
-                }
-            );
-        });
-
         EventTracker.recordEvent(TRACKABLE_EVENT.AIRPORTS, 'airport-switcher', 'open');
         this.$airportDialog.addClass(SELECTORS.CLASSNAMES.OPEN);
 
@@ -673,6 +669,16 @@ class UiController {
         $(`.icao-${icao}`).addClass(SELECTORS.CLASSNAMES.AIRPORT_LIST_ITEM_IS_ACTIVE);
 
         this.$switchAirport.addClass(SELECTORS.CLASSNAMES.ACTIVE);
+    }
+
+    onInitiateAirportSearch() {
+        const value = this.$airportDialog.find(SELECTORS.DOM_SELECTORS.AIRPORT_SEARCH).val().toLowerCase();
+        
+        $('.dialog-body li').filter(
+                function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+                }
+        );
     }
 
     /**
